@@ -3,7 +3,6 @@ package pgutil
 import (
 	"errors"
 	"fmt"
-	"log"
 	"strings"
 )
 
@@ -48,14 +47,14 @@ const (
 /**
  *  create文をtokenに分ける
  */
-func ParseToken(sql string) (tokens []string, err error) {
+func Tokenize(sql string) (tokens []string, err error) {
 	sql = strings.ToLower(sql)
 	sql = strings.Replace(sql, "\n", "", -1)
 	sql = strings.Replace(sql, "\t", "", -1)
 
 	_tokens := strings.Split(sql, " ")
 	for _, t := range _tokens {
-		log.Printf("debug t:%s\n", t)
+		// log.Printf("debug t:%s\n", t)
 		//tに"(", ","が含まれていたら分ける
 		if strings.ContainsAny(t, "(,)") {
 			//1文字ずつ見る
@@ -63,18 +62,18 @@ func ParseToken(sql string) (tokens []string, err error) {
 			for pos, c := range t {
 				if c == '(' || c == ',' || c == ')' || c == ';' {
 					if start < pos {
-						log.Printf("t[start:pos]:%s\n", t[start:pos])
+						// log.Printf("t[start:pos]:%s\n", t[start:pos])
 						tokens = append(tokens, t[start:pos])
 					}
 					start = pos + 1
-					log.Printf("string([]rune{c}):%s\n", string([]rune{c}))
+					// log.Printf("string([]rune{c}):%s\n", string([]rune{c}))
 					tokens = append(tokens, string([]rune{c}))
 				}
 			}
 			//終わりの処理
 			if start < len(t) {
 				end := t[start:]
-				log.Printf("end:%s\n", end)
+				// log.Printf("end:%s\n", end)
 				tokens = append(tokens, end)
 			}
 		} else {

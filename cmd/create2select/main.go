@@ -40,7 +40,7 @@ func main() {
 		order_type integer
 	);`
 	log.Printf("sql:%s", sql)
-	tokens, err := pgutil.ParseToken(sql)
+	tokens, err := pgutil.Tokenize(sql)
 	if err != nil {
 		log.Fatalf("ptoken failed:%v\n", err)
 	}
